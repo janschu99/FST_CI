@@ -20,7 +20,7 @@ public class DataParser {
                 countries.get(dataPoint.Country).add(dataPoint);
             } else {
                 ArrayList<CountryDataPoint> list = new ArrayList<>();
-                list.add(dataPoint);
+                //list.add(dataPoint);
                 countries.put(dataPoint.Country, list);
             }
         }
