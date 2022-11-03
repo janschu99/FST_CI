@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
   implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
+  testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 
 sourceSets {
@@ -27,6 +28,8 @@ sourceSets {
     }
   }
 }
+
+tasks.getByName("run").mustRunAfter("test")
 
 if (project.gradle.startParameter.taskNames.contains("buildUI") || project.gradle.startParameter.taskNames.contains("runUI")) {
   sourceSets.main.java.excludes = []
@@ -61,10 +64,12 @@ task buildUI(dependsOn: assemble) {
 
 task runCore(dependsOn: buildCore) {
   dependsOn "copyData"
+  dependsOn "test"
   finalizedBy "run"
 }
 
 task runUI(dependsOn: buildUI) {
   dependsOn "copyData"
+  dependsOn "test"
   finalizedBy "run"
 }
