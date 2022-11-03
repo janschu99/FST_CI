@@ -55,11 +55,11 @@ task copyData(type: Copy) {
 }
 
 task buildCore(dependsOn: assemble) {
-  
+  finalizedBy "test"
 }
 
 task buildUI(dependsOn: assemble) {
-  
+  finalizedBy "test"
 }
 
 task runCore(dependsOn: buildCore) {
