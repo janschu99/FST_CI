@@ -1,0 +1,70 @@
+plugins {
+  id "java"
+  id "application"
+  id "org.openjfx.javafxplugin" version "0.0.8"
+  id "de.undercouch.download" version "4.1.1"
+}
+
+mainClassName = "de.unitrier.st.core.Main"
+
+javafx {
+  modules = ["javafx.controls"]
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
+}
+
+sourceSets {
+  main {
+    java {
+      srcDir "src/main/java"
+      excludes = ["**/ui/*.java"]
+    }
+  }
+}
+
+if (project.gradle.startParameter.taskNames.contains("buildUI") || project.gradle.startParameter.taskNames.contains("runUI")) {
+  sourceSets.main.java.excludes = []
+  mainClassName="de.unitrier.st.ui.Ui"
+}
+
+task downloadData(type: Download) {
+  src "https://datahub.io/core/covid-19/r/covid-19_zip.zip"
+  dest buildDir
+  onlyIfModified true
+}
+
+task unzipData(type: Copy) {
+  dependsOn "downloadData"
+  from zipTree(file("$buildDir/covid-19_zip.zip"))
+  into file("$buildDir/resources")
+}
+
+task copyData(type: Copy) {
+  dependsOn "unzipData"
+  from file("$buildDir/resources/data/countries-aggregated_json.json")
+  into file("$buildDir/../src/main/resources")
+}
+
+task buildCore(dependsOn: assemble) {
+  
+}
+
+task buildUI(dependsOn: assemble) {
+  
+}
+
+task runCore(dependsOn: buildCore) {
+  dependsOn "copyData"
+  finalizedBy "run"
+}
+
+task runUI(dependsOn: buildUI) {
+  dependsOn "copyData"
+  finalizedBy "run"
+}
