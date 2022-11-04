@@ -23,7 +23,7 @@ dependencies {
 
 sonarqube {
   properties {
-    property "sonar.projectKey", "FST_CI"
+    property "sonar.projectKey", "janschu99_FST_CI"
     property "sonar.organization", "janschu99"
     property "sonar.host.url", "https://sonarcloud.io"
   }
