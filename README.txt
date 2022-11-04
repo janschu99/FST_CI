@@ -1,2 +1,2 @@
 Test-Project for testing CI
-Version 3
+Version 4
